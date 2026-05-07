@@ -8,7 +8,6 @@
   <link rel="icon" href="favicon.png" type="image/png">
 </head>
 <body>
-
 <nav class="nav">
   <div class="nav-inner">
     <a href="index.html" class="nav-logo">ice <span>labs</span></a>
@@ -23,15 +22,16 @@
     </ul>
   </div>
 </nav>
-
 <section class="hero">
   <h1>ice labs</h1>
   <p>Building frozen worlds in virtual reality. Jump in and play.</p>
 </section>
-
+<div style="display:flex;justify-content:center">
+ <iframe id="stoat-widget" src="https://stoat.fiveplace.me/widget/widget.php?id=d860c7eb9e896866&lang=en&v=1778111204803&theme=dark" style="width:100%;max-width:350px;min-height:200px;height:500px;border:none;border-radius:12px" frameborder="0" sandbox="allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts"></iframe>
+</div>
+<script>window.addEventListener('message',function(e){if(e.data&&e.data.type==='stoat-widget-resize'){document.getElementById('stoat-widget').style.height=e.data.height+'px'}});</script>
 <section class="games-section">
   <h2>Our Games</h2>
-
   <div class="game-card">
     <div class="game-info">
       <div class="game-badge">Now Available</div>
@@ -48,7 +48,6 @@
       <div class="ice-icon">❄️</div>
     </div>
   </div>
-
   <div class="game-card" style="margin-top: 24px;">
     <div class="game-info">
       <div class="game-badge">Now Available</div>
@@ -65,7 +64,6 @@
     </div>
   </div>
 </section>
-
 <footer class="footer">
   <div class="footer-links">
     <a href="terms.html">Terms of Service</a>
@@ -74,6 +72,5 @@
   </div>
   <p>© 2026 ice labs LLC. All rights reserved.</p>
 </footer>
-
 </body>
 </html>
