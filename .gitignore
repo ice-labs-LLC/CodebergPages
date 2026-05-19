@@ -19,3 +19,4 @@ Gemfile.lock
 .DS_Store
 .idea/
 icetagcustomassets/.DS_Store
+cdn/.DS_Store
