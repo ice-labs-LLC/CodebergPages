@@ -4,33 +4,28 @@
    DESIGN TOKENS
    ───────────────────────────────────────────── */
 :root {
-  /* Ambient scene colors */
   --bg:           #0d0d1a;
   --bg-card:      transparent;
   --bg-nav:       rgba(13, 13, 26, 0.4);
 
-  /* Brand accents (used sparingly for text/icons only) */
   --ice:          #5ec4e8;
   --ice-glow:     #3aadd4;
   --frost:        #a8e0f0;
   --white:        rgba(255, 255, 255, 0.95);
   --muted:        rgba(200, 220, 235, 0.58);
 
-  /* Glass surface system */
   --glass-fill:         rgba(255, 255, 255, 0.07);
   --glass-fill-hover:   rgba(255, 255, 255, 0.11);
   --glass-fill-active:  rgba(255, 255, 255, 0.15);
   --glass-border:       rgba(255, 255, 255, 0.18);
   --glass-border-hover: rgba(255, 255, 255, 0.28);
-  --glass-shine:        rgba(255, 255, 255, 0.55);   /* top-edge specular */
-  --glass-sheen:        rgba(255, 255, 255, 0.18);   /* inner gradient highlight */
+  --glass-shine:        rgba(255, 255, 255, 0.55);
+  --glass-sheen:        rgba(255, 255, 255, 0.18);
 
-  /* Blur */
   --blur-sm:   blur(12px) saturate(160%);
   --blur-md:   blur(24px) saturate(180%);
   --blur-lg:   blur(40px) saturate(200%);
 
-  /* Typography */
   --font-display: "SF Pro Display", "Helvetica Neue", "Segoe UI", system-ui, sans-serif;
   --font-body:    "SF Pro Text",    "Helvetica Neue", "Segoe UI", system-ui, sans-serif;
 }
@@ -48,22 +43,13 @@ body {
   font-size: 16px;
   line-height: 1.6;
   min-height: 100vh;
-  /* Optional: add your own ambient orbs here via a pseudo or a dedicated .bg element */
 }
 
 a { color: var(--frost); text-decoration: none; transition: color 0.2s; }
 a:hover { color: var(--white); }
 
 /* ─────────────────────────────────────────────
-   GLASS UTILITY  (apply to any surface)
-   ─────────────────────────────────────────────
-   Usage: add class="glass" to any element, or
-   use the mixin rules directly.
-
-   Anatomy:
-     • element bg  = semi-transparent fill
-     • ::before    = inner gradient sheen (top-left catch light)
-     • ::after     = top-edge specular line
+   GLASS UTILITY
    ───────────────────────────────────────────── */
 .glass {
   background:          var(--glass-fill);
@@ -76,34 +62,32 @@ a:hover { color: var(--white); }
   transition: background 0.25s ease, border-color 0.25s ease;
 }
 
-/* Inner catch-light (top-left highlight) */
 .glass::before {
   content: '';
   position: absolute;
   inset: 0;
   border-radius: inherit;
   background: linear-gradient(
-          135deg,
-          rgba(255, 255, 255, 0.18) 0%,
-          rgba(255, 255, 255, 0.04) 40%,
-          transparent 70%
+    135deg,
+    rgba(255, 255, 255, 0.18) 0%,
+    rgba(255, 255, 255, 0.04) 40%,
+    transparent 70%
   );
   pointer-events: none;
   z-index: 0;
 }
 
-/* Top-edge specular line */
 .glass::after {
   content: '';
   position: absolute;
   top: 0; left: 0; right: 0;
   height: 1px;
   background: linear-gradient(
-          90deg,
-          transparent 5%,
-          var(--glass-shine) 40%,
-          var(--glass-shine) 60%,
-          transparent 95%
+    90deg,
+    transparent 5%,
+    var(--glass-shine) 40%,
+    var(--glass-shine) 60%,
+    transparent 95%
   );
   pointer-events: none;
   z-index: 1;
@@ -114,31 +98,35 @@ a:hover { color: var(--white); }
   border-color:  var(--glass-border-hover);
 }
 
-/* Children need z-index to sit above ::before sheen */
 .glass > * { position: relative; z-index: 2; }
 
 /* ─────────────────────────────────────────────
-   NAVIGATION
+   NAVIGATION — bottom bar
    ───────────────────────────────────────────── */
 .nav {
-  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  position: fixed;
+  bottom: 0; left: 0; right: 0;
+  top: unset;
+  z-index: 100;
   background:          var(--bg-nav);
   backdrop-filter:     var(--blur-lg);
   -webkit-backdrop-filter: var(--blur-lg);
-  border-bottom:       1px solid var(--glass-border);
+  border-bottom:       none;
+  border-top:          1px solid var(--glass-border);
 }
 
-/* Top specular on nav */
+/* Specular line sits at the top edge of the bar */
 .nav::after {
   content: '';
   position: absolute;
-  top: 0; left: 0; right: 0; height: 1px;
+  top: 0; bottom: unset; left: 0; right: 0;
+  height: 1px;
   background: linear-gradient(
-          90deg,
-          transparent 0%,
-          rgba(255, 255, 255, 0.45) 35%,
-          rgba(255, 255, 255, 0.45) 65%,
-          transparent 100%
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.45) 35%,
+    rgba(255, 255, 255, 0.45) 65%,
+    transparent 100%
   );
   pointer-events: none;
 }
@@ -166,7 +154,6 @@ a:hover { color: var(--white); }
 .nav-links a:hover,
 .nav-links a.active { color: rgba(255, 255, 255, 0.9); }
 
-/* Mobile nav toggle */
 .nav-toggle {
   display: none; background: none; border: none;
   color: rgba(255, 255, 255, 0.7); font-size: 22px; cursor: pointer;
@@ -176,17 +163,20 @@ a:hover { color: var(--white); }
   .nav-toggle { display: block; }
   .nav-links {
     display: none; flex-direction: column; gap: 0;
-    position: absolute; top: 60px; left: 0; right: 0;
+    position: absolute;
+    bottom: 60px; top: unset; /* opens upward */
+    left: 0; right: 0;
     background: rgba(13, 13, 26, 0.88);
     backdrop-filter: var(--blur-lg);
     -webkit-backdrop-filter: var(--blur-lg);
-    border-bottom: 1px solid var(--glass-border);
+    border-top:    1px solid var(--glass-border);
+    border-bottom: none;
   }
   .nav-links.open { display: flex; }
   .nav-links a {
     display: block;
     padding: 14px 24px;
-    border-top: 1px solid var(--glass-border);
+    border-bottom: 1px solid var(--glass-border);
   }
 }
 
@@ -194,22 +184,21 @@ a:hover { color: var(--white); }
    HERO
    ───────────────────────────────────────────── */
 .hero {
-  padding: 140px 24px 80px;
+  padding: 100px 24px 120px; /* extra bottom padding clears the nav */
   text-align: center;
   position: relative;
   overflow: hidden;
 }
 
-/* Ambient glow orb — the "scene light" behind glass */
 .hero::before {
   content: '';
   position: absolute; top: -80px; left: 50%; transform: translateX(-50%);
   width: 700px; height: 700px;
   background: radial-gradient(
-          circle,
-          rgba(94, 196, 232, 0.12) 0%,
-          rgba(58, 141, 224, 0.07) 40%,
-          transparent 70%
+    circle,
+    rgba(94, 196, 232, 0.12) 0%,
+    rgba(58, 141, 224, 0.07) 40%,
+    transparent 70%
   );
   pointer-events: none;
 }
@@ -221,7 +210,6 @@ a:hover { color: var(--white); }
   letter-spacing: 3px;
   color: rgba(255, 255, 255, 0.96);
   margin-bottom: 14px;
-  /* Subtle text shimmer effect */
   background: linear-gradient(135deg, #ffffff 30%, var(--frost) 70%, #ffffff 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -240,7 +228,7 @@ a:hover { color: var(--white); }
    GAME CARDS
    ───────────────────────────────────────────── */
 .games-section {
-  max-width: 1080px; margin: 0 auto; padding: 0 24px 80px;
+  max-width: 1080px; margin: 0 auto; padding: 0 24px 100px; /* bottom pad clears nav */
 }
 .games-section h2 {
   font-family: var(--font-display);
@@ -250,7 +238,6 @@ a:hover { color: var(--white); }
 }
 
 .game-card {
-  /* Extends .glass */
   background:          var(--glass-fill);
   backdrop-filter:     var(--blur-md);
   -webkit-backdrop-filter: var(--blur-md);
@@ -309,7 +296,6 @@ a:hover { color: var(--white); }
   position: relative;
   overflow: hidden;
 }
-/* Pill top-specular */
 .game-info .game-badge::before {
   content: '';
   position: absolute; top: 0; left: 10%; right: 10%; height: 1px;
@@ -359,7 +345,6 @@ a:hover { color: var(--white); }
   transition: background 0.2s, border-color 0.2s, transform 0.15s;
 }
 
-/* Dome highlight — upper half is lighter */
 .btn::before {
   content: '';
   position: absolute; top: 0; left: 0; right: 0; height: 55%;
@@ -380,7 +365,6 @@ a:hover { color: var(--white); }
   background: rgba(255, 255, 255, 0.24);
 }
 
-/* Accent variant — tinted glass */
 .btn-accent {
   background: rgba(94, 196, 232, 0.18);
   border-color: rgba(94, 196, 232, 0.32);
@@ -425,7 +409,7 @@ a:hover { color: var(--white); }
 .page-wrap {
   max-width: 760px;
   margin: 0 auto;
-  padding: 120px 24px 100px;
+  padding: 80px 24px 120px; /* extra bottom padding clears nav */
 }
 .page-wrap h1 {
   font-family: var(--font-display);
@@ -531,7 +515,7 @@ a:hover { color: var(--white); }
    ───────────────────────────────────────────── */
 .footer {
   text-align: center;
-  padding: 40px 24px 72px;
+  padding: 40px 24px 100px; /* extra bottom padding clears nav */
   border-top: 1px solid rgba(255, 255, 255, 0.08);
   color: rgba(255, 255, 255, 0.28);
   font-size: 13px;
@@ -542,10 +526,6 @@ a:hover { color: var(--white); }
 
 /* ─────────────────────────────────────────────
    AMBIENT ORB HELPER
-   ─────────────────────────────────────────────
-   Optional: add <div class="orb orb--blue"> etc.
-   inside a .scene or .hero wrapper to create the
-   colored light sources that make glass look alive.
    ───────────────────────────────────────────── */
 .orb {
   position: absolute;
