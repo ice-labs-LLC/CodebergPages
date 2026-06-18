@@ -18,7 +18,4 @@ _site/
 Gemfile.lock
 .DS_Store
 .idea/
-icetagcustomassets/.DS_Store
-cdn/.DS_Store
 old/.DS_Store
-.well-known/.DS_Store
